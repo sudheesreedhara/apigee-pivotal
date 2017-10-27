@@ -66,16 +66,18 @@ npm install .
 ```
 edgemicro configure -o $APIGEE_ORG -e $APIGEE_ENV -u {apigee-username}
 ```
-4. Copy and save key and secret values returned here. We will need these values later  (Step 7) in this lab. These values help Apigee Edge uniquely identify the Microgateway instance.
+4. Copy and save key and secret values returned here. We will need these values later  (Step 8) in this lab. These values help Apigee Edge uniquely identify the Microgateway instance. 
+
+5. Copy the newly generated configuration file to your application.
 
 ```
 cp ~/.edgemicro/$APIGEE_ORG-$APIGEE_ENV-config.yaml config/ 
 ```
+6. Add cloud-foundry-route-service to `sequence`. Your configuration should look like this - 
+
 ```
 vi config/$APIGEE_ORG-$APIGEE_ENV-config.yaml
 ```
-5. Add cloud-foundry-route-service to `sequence`. Your configuration should look like this - 
-
 ```
 edgemicro:
   port: 8000
@@ -86,12 +88,12 @@ edgemicro:
       - oauth
       - cloud-foundry-route-service
  ```
-6. Save this file. Then update the Edge Microgateway manifest file.
+7. Save this file. Then update the Edge Microgateway manifest file.
 
 ```
 vi manifest.yml
 ```
-7. Update EDGEMICRO_KEY, EDGEMICRO_SECRET, EDGEMICRO_ENV and EDGEMICRO_ORG in your manifest.yml file. 
+8. Update EDGEMICRO_KEY, EDGEMICRO_SECRET, EDGEMICRO_ENV and EDGEMICRO_ORG in your manifest.yml file. 
 
 ```
 ---
@@ -110,12 +112,13 @@ applications:
     EDGEMICRO_ORG: 'UPADATE WITH APIGEE ORG'
     NODE_TLS_REJECT_UNAUTHORIZED: 0
 ```
-8. Save the manifest file. Deploy Edge Microgateway as an application in PCF.
+9. Save the manifest file. Deploy Edge Microgateway as an application in PCF.
 
 ```
 cf push
 
 ```
+10. Congratulations! Now you have successfully deployed Apigee Edge Microgateway in PCF. 
 
 ## Deploy a Sample App to PCF
 
