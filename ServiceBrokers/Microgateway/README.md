@@ -1,12 +1,7 @@
 # Apigee Edge Service Broker Microgateway Plan
 
-*Duration : 45 mins*
-
-*Persona : API Team*
-
-# Use case
-
-You have an API Created in Pivotal Cloud Founday. You want to proxy it through Apigee Edge
+# Use Case
+You have applications deployed in PCF. You want these application to be exposed as APIs to your developers and partners. 
 
 # How can Apigee Edge help?
 
@@ -20,7 +15,7 @@ This lab describes how to push a sample app to Pivotal Cloud Foundry (PCF), crea
 
 * You have installed [cf CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html).
 
-* You have an Apigee account and have access to an Apigee org
+* You have an Apigee account and have access to an Apigee org. 
 
 # Instructions
 
@@ -54,17 +49,33 @@ PCF_DOMAIN: PCF Domain for your apps.
 
 	Follow the instructions from this [Apigee Edge Microgateway for Cloud Foundry Page](https://github.com/apigee/pivotal-cf-apigee/tree/master/microgateway-addons)
 	
-	Or you can follow these instructions from the lab (The Lab still has all the details of what each of the commands) 
+	Alternatively, you can follow these instructions from the lab (The Lab still has all the details of what each of the commands) 
 	
+	Clone the Apigee Edge Microgateway repository.
 	```
 	git clone https://github.com/apigee-internal/microgateway
+	```
+	```
 	cd microgateway
+	```
+	Install Apigee Edge Microgateway 
+	```
 	npm install .
+	```
+	Configure Apigee Edge Microgateway with an Apigee Edge (both cloud or on-premises) instance. If you are using an on-premises instance of Edge, please follow the instructions from [here](https://docs.apigee.com/microgateway/latest/setting-and-configuring-edge-microgateway) 
+	```
 	edgemicro configure -o $APIGEE_ORG -e $APIGEE_ENV -u {apigee-username}
-	cp ~/.edgemicro/$APIGEE_ORG-$APIGEE_ENV-config.yaml config/ 
-	vi config/$APIGEE_ORG-$APIGEE_ENV-config.yaml 
+	```
+	Copy and save key and secret values returned here. We will need this values later.
 	
-	add cloud-foundry-route-service to the sequence - like
+	```
+	cp ~/.edgemicro/$APIGEE_ORG-$APIGEE_ENV-config.yaml config/ 
+	```
+	```
+	vi config/$APIGEE_ORG-$APIGEE_ENV-config.yaml
+	```
+	Add cloud-foundry-route-service to the sequence - like
+	```
 	edgemicro:
 	  port: 8000
 	  max_connections: 1000
@@ -73,10 +84,15 @@ PCF_DOMAIN: PCF Domain for your apps.
 	    sequence:
 	      - oauth
 	      - cloud-foundry-route-service
+	 ```
+	Save this file. Then update the Edge Microgateway manifest file.
 	
-	Exit and save (:wq)
-	
+	```
 	vi manifest.yml
+	```
+	Update EDGEMICRO_KEY, EDGEMICRO_SECRET, EDGEMICRO_ENV and EDGEMICRO_ORG in your manifest.yml file. 
+	
+	```
 	---
 	applications:
 	- name: {your_initials}-edgemicro-app
@@ -92,14 +108,16 @@ PCF_DOMAIN: PCF Domain for your apps.
 	    EDGEMICRO_ENV: 'UPADATE WITH APIGEE ENV'
 	    EDGEMICRO_ORG: 'UPADATE WITH APIGEE ORG'
 	    NODE_TLS_REJECT_UNAUTHORIZED: 0
-	
-	Exit and save (:wq)
-	
+	```
+	Save the manifest file.
+
+	```
 	cf push
 	
 	```
-
-2. Deploy a sample App to PCF
+	This will deploy Edge Microgateway as an application in PCF.
+	
+2. Deploy a Sample App to PCF
 
 	Login to the PCF Environment if not already logged in
 	
